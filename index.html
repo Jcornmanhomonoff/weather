@@ -5,13 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Weather App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
 </head>
 <body>
     <h1>Weather App</h1>
-
+    <div id="app"></div>
     <script>
-        console.log('hello world');
+        const container = document.getElementById('app'),
+            apiKey = '565506a88c7580ce6dde20b2b88936cc',
+            requestUrl = 'https://api.openweathermap.org/data/2.5/weather',
+            locationId = '5084868',
+            iconUrl = 'https://openweathermap.org/img/w/';
+
+        const request = url => {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+
+                xhr.open('GET', url);
+                xhr.onload = () => resolve(xhr.responseText);
+                xhr.onerror = () => reject(xhr.statusText);
+                xhr.send();
+            });
+        };
+
+        request(`${requestUrl}?id=${locationId}&appid=${apiKey}`)
+            .then(res => {
+                let json = JSON.parse(res),
+                markup = '';
+            
+                markup += `<img src="${iconUrl}${json.weather[0].icon}.png">`;
+                markup += `<p>It's currently ${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F and ${json.weather[0].main} in ${json.name}.</p>`;
+
+                container.innerHTML = markup;
+            })
+            .catch(error => {
+                console.error(error);
+            });
     </script>
 </body>
 </html>
