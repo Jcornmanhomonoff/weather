@@ -1,0 +1,12 @@
+.forecast {
+    align-items: center;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    height: 330px;
+    justify-content: flex-end;
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+    width: 250px;
+}

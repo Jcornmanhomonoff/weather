@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Weather App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
 </head>
 <body>
     <h1>Weather App</h1>
@@ -37,9 +37,10 @@
             request(`${requestUrl}?zip=${zipcode},us&appid=${apiKey}`)
                 .then(res => {
                     let json = JSON.parse(res),
-                    markup = '';
+                    markup = `<div class="forecast">`;
+                    console.log(json);
                     markup += `<img src="${iconUrl}${json.weather[0].icon}.png">`;
-                    markup += `<p>It's currently ${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F and ${json.weather[0].main} in ${json.name}.</p>`;
+                    markup += `<p>It's currently ${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F and ${json.weather[0].main} in ${json.name}.</p></div>`;
 
                     container.innerHTML = markup;
                 })
