@@ -13,8 +13,39 @@
         <input type="text" class="zipcode">
         <button type="submit">Search</button>
     </form>
-    <div id="app"></div>
+    <div id="app" class="container"></div>
     <script>
+
+        //number of drops created
+        const nbDrop = 288;
+
+        // generate a random number range
+        const randRange = (min, max) => {
+            return (Math.floor(Math.random() * (max - min + 1)) + min);
+        };
+
+        // create raindrops & randomly place them based on
+        // the above function's return value
+        const createRain = () => {
+            for (i = 1; i < nbDrop; i++) {
+
+                // specifies width
+                let dropLeft = randRange(0,420);
+                // specifies height
+                let dropTop = randRange(-1000,900);
+                let drop = document.createElement('div');
+
+
+                drop.className = 'drop';
+                drop.id = `drop${i}`;
+                drop.style.cssText = `left: ${dropLeft}px; top: ${dropTop}px`;
+
+                document.querySelector('.forecast').appendChild(drop);
+
+                console.log(document.getElementById(`drop${i}`).style.top);
+            }
+        };
+
         const container = document.getElementById('app'),
             apiKey = '565506a88c7580ce6dde20b2b88936cc',
             requestUrl = 'https://api.openweathermap.org/data/2.5/weather',
@@ -37,12 +68,13 @@
             request(`${requestUrl}?zip=${zipcode},us&appid=${apiKey}`)
                 .then(res => {
                     let json = JSON.parse(res),
-                    markup = `<div class="forecast">`;
+                    markup = `<div class="forecast"></div><div class="weather-content">`;
                     console.log(json);
                     markup += `<img src="${iconUrl}${json.weather[0].icon}.png">`;
                     markup += `<p>It's currently ${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F and ${json.weather[0].main} in ${json.name}.</p></div>`;
 
                     container.innerHTML = markup;
+                    createRain();
                 })
                 .catch(error => {
                     console.error(error);
