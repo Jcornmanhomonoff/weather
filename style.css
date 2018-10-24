@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
+
+body {
+    font-family: 'Didact Gothic', sans-serif;
+}
+
 .container {
     background: #3d4e72; /* Old browsers */
     background: -moz-linear-gradient(top, #3d4e72 0%, #000000 100%); /* FF3.6-15 */
@@ -29,6 +35,6 @@
 /* MAKE IT RAIN */
 @keyframes rain {
     to {
-        margin-top: 900px;
+        transform: translate3d(0, 900px, 0);
     }
 }

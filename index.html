@@ -32,7 +32,7 @@
                 // specifies width
                 let dropLeft = randRange(0,420);
                 // specifies height
-                let dropTop = randRange(-1000,900);
+                let dropTop = randRange(-1000,850);
                 let drop = document.createElement('div');
 
 
@@ -41,8 +41,6 @@
                 drop.style.cssText = `left: ${dropLeft}px; top: ${dropTop}px`;
 
                 document.querySelector('.forecast').appendChild(drop);
-
-                console.log(document.getElementById(`drop${i}`).style.top);
             }
         };
 
@@ -69,12 +67,15 @@
                 .then(res => {
                     let json = JSON.parse(res),
                     markup = `<div class="forecast"></div><div class="weather-content">`;
-                    console.log(json);
                     markup += `<img src="${iconUrl}${json.weather[0].icon}.png">`;
-                    markup += `<p>It's currently ${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F and ${json.weather[0].main} in ${json.name}.</p></div>`;
+                    markup += `<p>${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F and ${json.weather[0].main} in ${json.name}.</p></div>`;
 
+                    console.log(json.weather[0].icon);
                     container.innerHTML = markup;
-                    createRain();
+
+                    if (json.weather[0].icon === "10d" || json.weather[0].icon === "09d") {
+                        createRain();
+                    }
                 })
                 .catch(error => {
                     console.error(error);
