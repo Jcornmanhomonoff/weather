@@ -5,16 +5,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Weather App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
 </head>
 <body>
     <h1>Weather App</h1>
-    <div id="app"></div>
+    <form class="zipform">
+        <input type="text" class="zipcode">
+        <button type="submit">Search</button>
+    </form>
+    <div id="app" class="container"></div>
     <script>
+
+        const sun = document.createElement('div');
+        sun.className = 'sun'
+        sun.innerHTML = `<div class="ray ray5"></div>
+                        <div class="ray ray6"></div>
+                        <div class="ray ray7"></div>
+                        <div class="ray ray8"></div>
+                        <div class="ray ray9"></div>
+                        <div class="ray ray10"></div>`;
+
+        //number of raindrops created
+        const nbDrop = 288;
+
+        // generate a random number range
+        const randRange = (min, max) => {
+            return (Math.floor(Math.random() * (max - min + 1)) + min);
+        };
+
+        // create raindrops & randomly place them based on
+        // the above function's return value
+        const createRain = () => {
+            for (i = 1; i < nbDrop; i++) {
+
+                // specifies width
+                let dropLeft = randRange(0,420);
+                // specifies height
+                let dropTop = randRange(-1000,850);
+                let drop = document.createElement('div');
+
+
+                drop.className = 'drop';
+                drop.id = `drop${i}`;
+                drop.style.cssText = `left: ${dropLeft}px; top: ${dropTop}px`;
+                document.querySelector('.forecast').appendChild(drop);
+            }
+        };
+
         const container = document.getElementById('app'),
             apiKey = '565506a88c7580ce6dde20b2b88936cc',
             requestUrl = 'https://api.openweathermap.org/data/2.5/weather',
-            locationId = '5084868',
             iconUrl = 'https://openweathermap.org/img/w/';
 
         const request = url => {
@@ -28,19 +68,34 @@
             });
         };
 
-        request(`${requestUrl}?id=${locationId}&appid=${apiKey}`)
-            .then(res => {
-                let json = JSON.parse(res),
-                markup = '';
-            
-                markup += `<img src="${iconUrl}${json.weather[0].icon}.png">`;
-                markup += `<p>It's currently ${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F and ${json.weather[0].main} in ${json.name}.</p>`;
+        const sendRequest = function (event) {
+            event.preventDefault();
+            zipcode = document.querySelector('.zipcode').value;
 
-                container.innerHTML = markup;
-            })
-            .catch(error => {
-                console.error(error);
-            });
+            request(`${requestUrl}?zip=${zipcode},us&appid=${apiKey}`)
+                .then(res => {
+                    let json = JSON.parse(res),
+                        markup = `<div class="forecast"><div class="weather-content">`;
+
+                    markup += `<p class="degrees">${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F</p><p>${json.name}</p></div>`;
+
+                    console.log(json);
+                    console.log(json.weather[0].icon);
+                    container.innerHTML = markup;
+
+                    if (json.weather[0].icon === "10d" || json.weather[0].icon === "09d") {
+                        createRain();
+                    } else if (json.weather[0].icon === "01d") {
+                        document.querySelector('.forecast').appendChild(sun);
+                        document.querySelector('.container').style.background = 'rgb(75, 197, 236)';
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+        document.querySelector('.zipform').addEventListener('submit', sendRequest)
+
     </script>
 </body>
 </html>
