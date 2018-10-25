@@ -1,7 +1,32 @@
 @import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
 
 body {
+    box-sizing: border-box;
     font-family: 'Didact Gothic', sans-serif;
+}
+
+.zipform {
+    display: flex;
+    width: 300px;
+}
+
+.zipcode {
+    border: 10px solid rgb(218, 218, 218);
+    border-right: 5px solid rgb(218, 218, 218);
+    flex-basis: 40%;
+    padding: 7px 20px;
+}
+
+button {
+    background: linear-gradient(top, rgba(255,255,255,0.8) 30%, 100%);
+    background: rgb(38, 218, 177);
+    border: 10px solid rgb(218, 218, 218);
+    border-left: 5px solid rgb(218, 218, 218);
+    color: white;
+    flex-basis: 40%;
+    letter-spacing: 0.7px;
+    padding: 10px;
+    text-transform: uppercase;
 }
 
 .container {
@@ -16,11 +41,22 @@ body {
 }
 
 .forecast {
-    height: 330px;
+    font-size: 30px;
+    height: 400px;
     padding: 20px;
     position: relative;
 }
 
+p {
+    margin: 0;
+}
+
+.degrees {
+    font-size: 60px;
+}
+
+
+/* RAIN */
 .drop {
     background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), to(rgba(255,255,255,0.6))  );
     background: -moz-linear-gradient(top, rgba(13,52,58,1) 0%, rgba(255,255,255,.6) 100%);
@@ -37,4 +73,95 @@ body {
     to {
         transform: translate3d(0, 900px, 0);
     }
+}
+
+/* SUNSHINE */
+.sun {
+    animation: sunpulse 5s alternate infinite;
+    background: radial-gradient(rgba(238, 231, 165, 1), rgba(238, 231, 165, .5));
+    border-radius: 50%;
+    box-shadow: 0px 0px 40px 15px rgba(238, 231, 165, 0.7);
+    height: 70px;
+    left: -10px;
+    margin: auto;
+    opacity: 0.9;
+    position: absolute;
+    top: -10px;
+    width: 70px;
+}
+
+.ray {
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+	background: linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+    border-radius: 0% 80% 0 0;
+    margin-left: 10px;
+    opacity: 0;
+    position: absolute;
+}
+
+
+.ray5 {
+    animation: glowing 2s infinite;
+    animation-delay: 1s;
+    height: 190px;
+    right: -90px;
+    top: 70px;
+    width: 23px;
+    -webkit-transform: rotate(320deg);
+}
+
+.ray6 {
+    animation: glowing 5s infinite;
+    animation-delay: 2s;
+    height: 190px;
+    left: -5px;
+    top: 110px;
+    width: 30px;
+   -webkit-transform: rotate(0deg);
+}
+.ray7 {
+    animation: glowing 5s infinite;
+    height: 280px;
+    right: -35px;
+    top: 80px;
+    width: 10px;
+   -webkit-transform: rotate(160deg);
+}
+.ray8 {
+    animation: glowing 5s infinite;
+    animation-delay: 3s;
+    height: 220px;
+    right: -150px;
+    top: -10px;
+    width: 30px;
+   -webkit-transform: rotate(110deg);
+}
+.ray9 {
+    animation: glowing 5s infinite;
+    animation-delay: 4s;
+    height: 80px;
+    right: -60px;
+    top: -45px;
+    width: 10px;
+   -webkit-transform: rotate(60deg);
+}
+.ray10 {
+    animation: glowing 5s infinite;
+    animation-delay: 1s;
+    height: 450px;
+    right: -250px;
+    top: -230px;
+    width: 23px;
+   -webkit-transform: rotate(260deg);
+}
+
+@keyframes glowing {
+  50% { opacity: .2 }
+  100% { opacity: 0 }
+}
+
+@keyframes sunpulse {
+	to {
+		box-shadow: 0 0 25px rgba(238, 231, 165, 1), 0 0 75px rgba(238, 231, 165, 1);
+	}
 }

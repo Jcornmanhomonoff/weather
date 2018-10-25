@@ -16,7 +16,16 @@
     <div id="app" class="container"></div>
     <script>
 
-        //number of drops created
+        const sun = document.createElement('div');
+        sun.className = 'sun'
+        sun.innerHTML = `<div class="ray ray5"></div>
+                        <div class="ray ray6"></div>
+                        <div class="ray ray7"></div>
+                        <div class="ray ray8"></div>
+                        <div class="ray ray9"></div>
+                        <div class="ray ray10"></div>`;
+
+        //number of raindrops created
         const nbDrop = 288;
 
         // generate a random number range
@@ -39,7 +48,6 @@
                 drop.className = 'drop';
                 drop.id = `drop${i}`;
                 drop.style.cssText = `left: ${dropLeft}px; top: ${dropTop}px`;
-
                 document.querySelector('.forecast').appendChild(drop);
             }
         };
@@ -59,6 +67,7 @@
                 xhr.send();
             });
         };
+
         const sendRequest = function (event) {
             event.preventDefault();
             zipcode = document.querySelector('.zipcode').value;
@@ -66,15 +75,19 @@
             request(`${requestUrl}?zip=${zipcode},us&appid=${apiKey}`)
                 .then(res => {
                     let json = JSON.parse(res),
-                    markup = `<div class="forecast"></div><div class="weather-content">`;
-                    markup += `<img src="${iconUrl}${json.weather[0].icon}.png">`;
-                    markup += `<p>${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F and ${json.weather[0].main} in ${json.name}.</p></div>`;
+                        markup = `<div class="forecast"><div class="weather-content">`;
 
+                    markup += `<p class="degrees">${(json.main.temp * 9 / 5 - 459.67).toFixed(1)}&deg;F</p><p>${json.name}</p></div>`;
+
+                    console.log(json);
                     console.log(json.weather[0].icon);
                     container.innerHTML = markup;
 
                     if (json.weather[0].icon === "10d" || json.weather[0].icon === "09d") {
                         createRain();
+                    } else if (json.weather[0].icon === "01d") {
+                        document.querySelector('.forecast').appendChild(sun);
+                        document.querySelector('.container').style.background = 'rgb(75, 197, 236)';
                     }
                 })
                 .catch(error => {
@@ -82,6 +95,7 @@
                 });
         }
         document.querySelector('.zipform').addEventListener('submit', sendRequest)
+
     </script>
 </body>
 </html>
